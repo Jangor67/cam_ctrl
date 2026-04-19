@@ -1,0 +1,14 @@
+[Unit]
+Description=Camera-RTSP
+Requires=mediamtx.service
+After=mediamtx.service
+
+[Service]
+ExecStart=/bin/bash -c './rpicam-rtsp.sh'
+WorkingDirectory=/home/jan/cam_ctrl
+Restart=always
+User=jan
+
+[Install]
+WantedBy=multi-user.target
+

@@ -16,6 +16,11 @@ echo "== Controleer sunwait =="
 
 if [ ! -f "$SUNWAIT_BIN" ]; then
     echo "sunwait niet gevonden, installeren..."
+    if [ ! -f "/usr/bin/make" ]; then
+      echo "first install build essential e.g."
+      echo "sudo apt install build-essential"
+      exit 1
+    fi
 
     cd "$HOME"
     if [ ! -d "sunwait" ]; then
@@ -74,10 +79,8 @@ echo "== Installeer nieuwe crontab =="
 crontab "$CRON_TMP" || echo "error in nieuwe crontab: check below for error:" && cat "$CRON_TMP"
 rm "$CRON_TMP"
 
-set -x
 echo "== Configureer en herstart service voor dit moment =="
-POLL=$(sunwait poll $LAT $LON) || echo "sunwait polling failed"
-echo "test"
+POLL=$(sunwait poll $LAT $LON) || echo ""
 if [ "$POLL" == "DAY" ]; then
     echo "== Running $DAY_SCRIPT Now =="
     $DAY_SCRIPT

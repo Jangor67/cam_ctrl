@@ -5,6 +5,10 @@ LINK="rpicam-rtsp.sh"
 TARGET="rpicam-rtsp-night.sh"
 SERVICE="camera-rtsp.service"
 
+DIRNAME=$(dirname $0)
+RELPATH=$(realpath --relative-to=$PWD $DIRNAME)
+cd $RELPATH
+
 echo "== Controleer target script =="
 
 if [ ! -f "$TARGET" ]; then

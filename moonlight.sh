@@ -2,7 +2,7 @@
 set -e
 
 LINK="rpicam-rtsp.sh"
-TARGET="rpicam-rtsp-midnight.sh"
+TARGET="rpicam-rtsp-moonlight.sh"
 SERVICE="camera-rtsp.service"
 
 DIRNAME=$(dirname $0)

@@ -8,9 +8,18 @@ LON="4.89E"
 
 DAY_SCRIPT="$PWD/day.sh"
 NIGHT_SCRIPT="$PWD/night.sh"
-MIDNIGHT_SCRIPT="$PWD/midnight.sh"
+MOONLIGHT_SCRIPT="$PWD/moonlight.sh"
 
 CRON_TMP=$(mktemp)
+
+read -p "Do you want to install moonlight routine? (y/n): " answer
+if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+    install_moonlight_routine=1
+else
+    install_moonlight_routine=0
+fi
+
+echo "Result = $result"
 
 echo "== Controleer sunwait =="
 
@@ -47,7 +56,7 @@ SUNRISE_CRON="0 5 * * * $SUNWAIT_BIN wait rise $LAT $LON && $DAY_SCRIPT"
 SUNSET_CRON="0 16 * * * $SUNWAIT_BIN wait set $LAT $LON && $NIGHT_SCRIPT"
 
 # Midnight cron (rond uitschakelen verlichting)
-MIDNIGHT_CRON="0 23 * * * $MIDNIGHT_SCRIPT"
+MOONLIGHT_CRON="0 23 * * * $MOONLIGHT_SCRIPT"
 
 grep -F "PATH" "$CRON_TMP" > /dev/null || {
     echo "PATH=$PATH" >> "$CRON_TMP"
@@ -67,12 +76,15 @@ grep -F "$NIGHT_SCRIPT" "$CRON_TMP" > /dev/null || {
     echo "$SUNSET_CRON" >> "$CRON_TMP"
     echo "Sunset job toegevoegd."
 }
-echo "== Voeg midnight job toe indien nodig =="
 
-grep -F "$MIDNIGHT_SCRIPT" "$CRON_TMP" > /dev/null || {
-    echo "$MIDNIGHT_CRON" >> "$CRON_TMP"
-    echo "Midnight job toegevoegd."
-}
+if [ "$install_moonlight_routine" -eq "1" ]; then
+  echo "== Voeg moonlight job toe indien nodig =="
+
+  grep -F "$MOONLIGHT_SCRIPT" "$CRON_TMP" > /dev/null || {
+      echo "$MOONLIGHT_CRON" >> "$CRON_TMP"
+      echo "Moonlight job toegevoegd."
+  }
+fi
 
 echo "== Installeer nieuwe crontab =="
 

@@ -1,10 +1,10 @@
 rpicam-vid \
   -t 0 \
-  --framerate 4 \
-  --shutter 200000 \
-  --gain 8 \
+  --framerate 2 \
+  --shutter 500000 \
+  --gain 12 \
   --denoise cdn_off \
-  --intra 8 \
+  --intra 4 \
   --inline -o - | \
 ffmpeg \
   -fflags nobuffer \
@@ -15,5 +15,5 @@ ffmpeg \
   -c:v libx264 \
   -preset ultrafast \
   -tune zerolatency \
-  -g 8 \
+  -g 4 \
   -f rtsp rtsp://localhost:8554/mystream
